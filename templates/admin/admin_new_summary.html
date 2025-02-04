@@ -1,0 +1,56 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Quiz Summary Dashboard{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/summary.css') }}">
+
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-5">📊 Quiz Summary Dashboard</h2>
+
+    <!-- Overall Statistics -->
+    <div class="row text-center mt-4">
+        <div class="col-md-3">
+            <div class="card shadow-lg p-4 rounded h-100">
+                <h5 class="text-secondary">Total Quizzes</h5>
+                <p class="h3 text-dark">{{ total_quizzes }}</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-lg p-4 rounded h-100">
+                <h5 class="text-secondary">Total Attempts</h5>
+                <p class="h3 text-dark">{{ total_attempts }}</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-lg p-4 rounded h-100">
+                <h5 class="text-secondary">Average Score</h5>
+                <p class="h3 text-success">{{ average_score }}%</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-lg p-4 rounded h-100">
+                <h5 class="text-secondary">Active Subjects</h5>
+                <p class="h3 text-dark">{{ total_subjects }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Charts -->
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h5 class="text-center">🏆 Top Performers</h5>
+            <div class="card p-3 shadow rounded">
+                <img src="{{ url_for('static', filename='images/top_performers.png') }}" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h5 class="text-center">📅 Quiz Attempts Over Time</h5>
+            <div class="card p-3 shadow rounded">
+                <img src="{{ url_for('static', filename='images/quiz_attempts.png') }}" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "user/user_base.html" %}
+
+{% block title %}Quiz Scores{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h1>Quiz Scores</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Quiz ID</th>
+                <th>No. of Questions</th>
+                <th>Date</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for score in scores %}
+            <tr>
+                <td>{{ score.quiz.id }}</td>
+                <td>{{ score.quiz.questions | length }}</td>
+                <td>{{ score.quiz.date_of_quiz.strftime('%Y-%m-%d') }}</td>
+                <td>{{ score.total_score }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

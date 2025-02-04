@@ -1,0 +1,129 @@
+/* General Styles for Text */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Container for overall summary cards */
+.card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Styling for headings */
+h5 {
+  font-weight: bold;
+  font-size: 18px;
+  color: #6c757d;
+}
+
+/* Styling for overall statistics */
+.card h5 {
+  font-size: 16px;
+  color: #6c757d;
+}
+
+.card .h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+/* Badge for score */
+.badge.bg-success {
+  font-size: 16px;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+}
+
+/* Section Spacing */
+.mt-5 {
+  margin-top: 30px;
+}
+
+.mt-4 {
+  margin-top: 20px;
+}
+
+.mb-5 {
+  margin-bottom: 40px;
+}
+
+/* Styling for the performance charts */
+.card img {
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Styling for the list items in the top performers and quiz attempts */
+.list-group-item {
+  padding: 12px 15px;
+  border: 1px solid #f1f1f1;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* Button Styling */
+.btn {
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-outline-danger {
+  color: #dc3545;
+  border: 2px solid #dc3545;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+/* Centering the Add Subject button */
+.text-center a {
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  line-height: 50px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.text-center a:hover {
+  background-color: #218838;
+}
+
+/* Ensure that the overall dashboard has a clean margin */
+.container {
+  margin-top: 40px;
+}
+

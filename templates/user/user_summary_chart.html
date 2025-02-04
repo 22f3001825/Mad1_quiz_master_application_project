@@ -1,0 +1,18 @@
+{% extends "user/user_base.html" %}
+{% block title %}Summary Charts{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h1>📊 Summary Charts</h1>
+    <div class="chart-container">
+        <h3>📚 Subject-wise No. of Quizzes</h3>
+        <img src="{{ subject_chart }}" class="img-fluid rounded shadow" style="max-width: 90%; height: auto;">
+    </div>
+    
+    <div class="chart-container">
+        <h3>📅 Month-wise No. of Quizzes Attempted</h3>
+        <img src="{{ month_chart }}" class="img-fluid rounded shadow" style="max-width: 90%; height: auto;">
+    </div>
+       
+</div>
+{% endblock %}

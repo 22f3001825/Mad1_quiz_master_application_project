@@ -1,0 +1,59 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Quiz Management{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center text-primary mb-4">📋 QUIZ MANAGEMENT</h2>
+
+<br>
+<br>
+    {% if quizzes %}
+    <div class="row">
+        {% for chapter in chapters %}
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0" class="text-center">{{ chapter.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>ID</th>
+                                <th>Quiz Title</th>
+                                <th>Date of Quiz</th>  
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for quiz in quizzes if quiz.chapter_id == chapter.id %}
+                            <tr>
+                                <td>{{ quiz.id }}</td>
+                                <td>{{ 'Quiz ' + quiz.id|string +' 💡' }}</td>
+                                <td>{{ quiz.date_of_quiz.strftime('%Y-%m-%d') }}</td>
+
+                                <td>
+                                    <a href="{{ url_for('edit_quiz', quiz_id=quiz.id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                    <a href="{{ url_for('delete_quiz', quiz_id=quiz.id) }}" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="{{ url_for('new_question', quiz_id=chapter.id) }}" class="btn btn-outline-primary w-100">
+                        ➕ Add Question
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center">No quizzes available. Click "New Quiz" to add.</div>
+    {% endif %}
+    <div class="text-center">
+        <a href="{{ url_for('new_quiz') }}" class="btn btn-success mb-4">+ New Quiz</a>
+    </div>
+</div>
+{% endblock %}

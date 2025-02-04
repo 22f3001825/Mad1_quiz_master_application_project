@@ -1,0 +1,42 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Edit Quiz{% endblock %}
+
+{% block content %}
+<h2 class="text-center text-primary">✏️ Edit Quiz - {{ 'Quiz #' + quiz.id|string }}</h2>
+
+<form method="POST" action="{{ url_for('edit_quiz', quiz_id=quiz.id) }}">
+    <!-- Chapter Dropdown -->
+    <div class="mb-3">
+        <label class="form-label">Chapter</label>
+        <select class="form-control" name="chapter_id" required>
+            {% for chapter in chapters %}
+            <option value="{{ chapter.id }}" {% if chapter.id == quiz.chapter.id %}selected{% endif %}>
+                {{ chapter.name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Date of Quiz -->
+    <div class="mb-3">
+        <label class="form-label">Date of Quiz</label>
+        <input type="date" class="form-control" name="date_of_quiz" value="{{ quiz.date_of_quiz.strftime('%Y-%m-%d') }}" required>
+    </div>
+
+    <!-- Duration of Quiz (HH:MM) -->
+    <div class="mb-3">
+        <label class="form-label">Duration (HH:MM)</label>
+        <input type="text" class="form-control" name="duration" value="{{ quiz.duration_seconds // 3600 }}:{{ (quiz.duration_seconds % 3600) // 60 }}" required>
+    </div>
+
+    <!-- Remarks (Optional) -->
+    <div class="mb-3">
+        <label class="form-label">Remarks</label>
+        <textarea class="form-control" name="remarks" rows="3">{{ quiz.remarks }}</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <a href="{{ url_for('quiz_management') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

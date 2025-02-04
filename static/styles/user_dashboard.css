@@ -1,0 +1,329 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 8px;
+}
+.navbar-brand {
+    font-weight: bold;
+    font-size: 22px;
+    color: #ffffff;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .navbar-brand:hover,
+  .navbar-nav .nav-link:hover {
+    color: #00bcd4;
+  }
+
+.navbar .menu {
+    display: flex;
+    gap: 15px;
+}
+
+.navbar .menu a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.navbar .menu a:hover {
+    text-decoration: underline;
+}
+
+.navbar .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+
+.navbar .search-bar input {
+    border: none;
+    outline: none;
+    padding: 5px;
+    flex: 1;
+}
+
+.navbar .search-bar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+}
+
+.navbar .welcome-text {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dashboard {
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.dashboard table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.dashboard table th,
+.dashboard table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.dashboard table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.dashboard table td .btn {
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+.dashboard table td .btn.view {
+    background-color: #007bff;
+    color: white;
+}
+
+.dashboard table td .btn.start {
+    background-color: #28a745;
+    color: white;
+}
+/* Custom styling for View Quiz page */
+.dashboard {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f6f9; 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-table-wrapper {
+    background-color: #ffffff; 
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+table.quiz-details th, table.quiz-details td {
+    text-align: left;
+    padding: 15px;
+    font-size: 16px; 
+}
+
+table.quiz-details {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table.quiz-details tr {
+    border-bottom: 1px solid #e0e0e0; /
+}
+
+table.quiz-details tr:hover {
+    background-color: #f7f7f7; 
+}
+
+table.quiz-details th {
+    background-color: #2d3e50; 
+    color: #ffffff; 
+    font-weight: bold;
+}
+
+button {
+    font-size: 16px;
+    padding: 12px 24px;
+    border-radius: 4px;
+    background-color: #4CAF50; 
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049; 
+    cursor: pointer;
+}
+
+h1 {
+    color: #333333;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        padding: 15px;
+    }
+    
+    .quiz-table-wrapper {
+        padding: 15px;
+    }
+    
+    table.quiz-details th, table.quiz-details td {
+        padding: 10px;
+    }
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.quiz-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.quiz-header {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+}
+
+/* Form and Options Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+ul.options {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.options li {
+    margin: 10px 0;
+    padding: 15px;
+    background-color: #ecf0f1;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+ul.options li:hover {
+    background-color: #d5dbdb;
+}
+
+ul.options input[type="radio"] {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Button Styling */
+.quiz-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.quiz-controls button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.quiz-controls button.btn-secondary {
+    background-color: #95a5a6;
+    color: #fff;
+}
+
+.quiz-controls button.btn-secondary:hover {
+    background-color: #7f8c8d;
+    transform: translateY(-2px);
+}
+
+.quiz-controls button.btn-primary {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.quiz-controls button.btn-primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.quiz-controls button.btn-success {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+.quiz-controls button.btn-success:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .quiz-container {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .quiz-header {
+        font-size: 1rem;
+    }
+
+    .quiz-controls button {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}

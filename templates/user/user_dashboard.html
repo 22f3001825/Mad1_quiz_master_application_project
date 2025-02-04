@@ -1,0 +1,43 @@
+{% extends "user/user_base.html" %}
+{% block title %}User Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h1>Upcoming Quizzes</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>No. of Questions</th>
+                <th>Date</th>
+                <th>Duration (hh:mm:ss)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for quiz in quizzes %}
+            <tr>
+                <td>{{ quiz.id }}</td>
+                <td>{{ quiz.questions|length }}</td> 
+                <td>{{ quiz.date_of_quiz.strftime('%Y-%m-%d') if quiz.date_of_quiz else 'N/A' }}</td>
+                <td>
+                    {% if quiz.duration_seconds %}
+                        {{ "%02d:%02d:%02d" | format(quiz.duration_seconds / 3600, 
+                                                    (quiz.duration_seconds % 3600) / 60, 
+                                                    quiz.duration_seconds % 60) }}
+                    {% else %}
+                        00:00:00
+                    {% endif %}
+                </td>
+                
+                <td>
+                    <a href="{{ url_for('user_view_quiz', quiz_id=quiz.id) }}" class="btn view">View</a>
+                    <a href="{{ url_for('user_start_quiz', quiz_id=quiz.id) }}" class="btn start">Start</a>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

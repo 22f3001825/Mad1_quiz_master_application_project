@@ -1,0 +1,10 @@
+.idea/
+__pycache__/
+venv/
+appliciton/__pycache__
+notes.txt
+migrations/
+static/images/month_quizzes.png
+static/images/quiz_attempts.png
+static/images/subject_quizzes.png
+static/images/top_performers.png

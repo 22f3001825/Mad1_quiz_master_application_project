@@ -1,0 +1,44 @@
+
+
+{% extends "user/user_base.html" %}
+
+{% block title %}View Quiz{% endblock %}
+
+{% block content %}
+<div class="dashboard container mt-5">
+    <h1 class="text-center mb-4">Quiz Details</h1>
+    <div class="quiz-table-wrapper">
+        <table class="table table-bordered quiz-details table-striped table-hover shadow-sm rounded">
+            <tr>
+                <td><strong>ID:</strong></td>
+                <td>{{ quiz.id }}</td>
+            </tr>
+            <tr>
+                <td><strong>Subject:</strong></td>
+                <td>{{ quiz.chapter.subject.name if quiz.chapter and quiz.chapter.subject else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Chapter:</strong></td>
+                <td>{{ quiz.chapter.name if quiz.chapter else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Number of Questions:</strong></td>
+                <td>{{ quiz.questions | length }}</td>
+            </tr>
+            <tr>
+                <td><strong>Scheduled Date:</strong></td>
+                <td>{{ quiz.date_of_quiz.strftime('%d/%m/%Y') if quiz.date_of_quiz else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Duration(mm:ss):</strong></td>
+                {% set minutes, seconds = divmod(quiz.duration_seconds | int, 60) %}
+                <td>{{ minutes }}:{{ '%02d' % seconds }}</td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div class="text-center">
+        <button class="btn btn-secondary btn-lg" onclick="window.history.back()">Close</button>
+    </div>
+</div>
+{% endblock %}
