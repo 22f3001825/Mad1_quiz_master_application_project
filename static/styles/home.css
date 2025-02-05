@@ -8,30 +8,55 @@
       color: #333;
     }
 
-    /* Hero Section */
-    .hero-section {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
-      padding: 20px;
-    }
+/* Hero Section */
 
-    .hero-section h1 {
-      font-size: 3.5rem;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 20px;
-    }
+.hero-section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), 
+              url('/static/images/home_back.jpg') center/cover no-repeat;
+  padding: 20px;
+  color: #fff;
+}
 
-    .hero-section p {
-      font-size: 1.2rem;
-      color: #555;
-      max-width: 600px;
-      margin: 0 auto 40px;
-    }
+
+.hero-section h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.6); /* More depth */
+  letter-spacing: 1.5px; /* Slightly spaced out for elegance */
+  margin-bottom: 15px;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+
+.hero-section p {
+  font-size: 1.4rem;
+  color: #f1f1f1;
+  max-width: 750px;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 1.8;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Improves visibility */
+  opacity: 0.95;
+  font-weight: 500;
+  animation: fadeInText 1.5s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInText {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 0.95; transform: translateY(0); }
+}
+
+
 
     /* Button container */
     .button-container {
@@ -55,16 +80,10 @@
       position: relative;
       overflow: hidden;
       outline: none;
-      box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.2),
-                  -8px -8px 16px rgba(255, 255, 255, 0.7);
+      /*box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.2),
+                  -8px -8px 16px rgba(255, 255, 255, 0.7);*/
     }
 
-    /* Neumorphic hover effect */
-    .btn:hover {
-      box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2),
-                  -4px -4px 8px rgba(255, 255, 255, 0.7);
-      transform: translateY(2px);
-    }
 
     /* Gradient animation */
     .btn::before {
