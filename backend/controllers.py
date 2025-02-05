@@ -7,9 +7,11 @@ import seaborn as sns
 import os
 from sqlalchemy.sql import func
 from sqlalchemy.orm import joinedload
+import matplotlib.pyplot as plt
 
 
 #  Home & Auth Pages
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -188,7 +190,7 @@ def new_question():
 
 
 
-from datetime import datetime
+
 
 
 @app.route('/admin/new_quiz', methods=['GET', 'POST'])
@@ -196,15 +198,13 @@ def new_quiz():
     if request.method == 'POST':
         chapter_id = request.form.get('chapter_id')
         date_of_quiz = request.form.get('date_of_quiz')
-        duration_str = request.form.get('duration')
+        duration_seconds = request.form.get('duration')
 
         try:
             # Convert date string to date object
             date_of_quiz = datetime.strptime(date_of_quiz, '%Y-%m-%d').date()
 
-            # Convert "hh:mm" format into seconds
-            hours, minutes = map(int, duration_str.split(":"))
-            duration_seconds = (hours * 3600) + (minutes * 60)
+            
 
             chapter = Chapter.query.get(chapter_id)
             if chapter:
@@ -259,16 +259,14 @@ def edit_quiz(quiz_id):
         # Get form data
         chapter_id = request.form.get('chapter_id')
         date_of_quiz = request.form.get('date_of_quiz')
-        duration_str = request.form.get('duration')
+        duration_seconds = request.form.get('duration')
         remarks = request.form.get('remarks')
 
         try:
             # Convert the date string to a date object
             date_of_quiz = datetime.strptime(date_of_quiz, '%Y-%m-%d').date()
 
-            # Convert hh:mm format into seconds
-            hours, minutes = map(int, duration_str.split(":"))
-            duration_seconds = (hours * 3600) + (minutes * 60)
+            
 
             # Get the selected chapter
             chapter = Chapter.query.get(chapter_id)
@@ -292,23 +290,18 @@ def edit_quiz(quiz_id):
     return render_template('admin/edit_quiz.html', quiz=quiz, chapters=chapters)
 
 
-import matplotlib.pyplot as plt
-import seaborn as sns
-import os
-from flask import render_template, url_for
-from io import BytesIO
-import base64
+
 
 @app.route('/admin/summary_charts')
 def admin_summary_charts():
     total_quizzes = Quiz.query.count()
     total_attempts = Score.query.count()
-    average_score = round(db.session.query(db.func.avg(Score.total_score)).scalar() or 0, 2)
+    average_score = round(db.session.query(func.avg(Score.total_score)).scalar() or 0, 2)
     total_subjects = Subject.query.count()
 
     # Fetch top performers
     top_performers = db.session.query(
-        User_Info.full_name, db.func.avg(Score.total_score).label('score')
+        User_Info.full_name, func.avg(Score.total_score).label('score')
     ).join(Score, Score.user_id == User_Info.id).group_by(User_Info.full_name).order_by(db.desc('score')).limit(5).all()
 
     # Fetch latest quiz attempts
@@ -323,29 +316,39 @@ def admin_summary_charts():
     # Ensure static/images directory exists
     os.makedirs("static/images", exist_ok=True)
 
-    #Chart 1: Top Performers
+    # 📊 **Chart 1: Top 5 Quiz Performers**
     plt.figure(figsize=(8, 5))
-    sns.barplot(x=top_performer_scores, y=top_performer_names, palette="viridis")
-    plt.xlabel("Average Score (%)")
-    plt.ylabel("Top Performers")
-    plt.title("Top Performers in Quiz")
+    sns.barplot(x=top_performer_scores, y=top_performer_names, palette="viridis", edgecolor="black")
+    plt.xlabel("Average Score", fontsize=12, fontweight='bold')
+    plt.ylabel("User", fontsize=12, fontweight='bold')
+    plt.title("🏆 Top 5 Quiz Performers", fontsize=14, fontweight='bold', color='darkblue')
+
+    # Add value labels
+    for i, v in enumerate(top_performer_scores):
+        plt.text(v + 2, i, f"{v:.1f}", va="center", fontsize=11, fontweight='bold')
+
     plt.tight_layout()
-    plt.savefig("static/images/top_performers.png")
+    plt.savefig("static/images/top_performers.png", dpi=300)
     plt.close()
 
-    # Chart 2: Quiz Attempts Over Time
-    attempts_by_date = db.session.query(Score.timestamp, db.func.count(Score.id)).group_by(Score.timestamp).all()
+    # 📅 **Chart 2: Quiz Attempt Trends Over Time**
+    attempts_by_date = db.session.query(func.strftime('%Y-%m-%d', Score.timestamp), func.count(Score.id)).group_by(func.strftime('%Y-%m-%d', Score.timestamp)).all()
     
     if attempts_by_date:
         dates, counts = zip(*attempts_by_date)
         plt.figure(figsize=(8, 5))
-        plt.plot(dates, counts, marker='o', linestyle='-', color='b')
-        plt.xlabel("Date")
-        plt.ylabel("Number of Attempts")
-        plt.title("Quiz Attempts Over Time")
+        plt.plot(dates, counts, marker='o', linestyle='-', linewidth=2, markersize=6, color='darkorange')
+        plt.xlabel("Attempt Date", fontsize=12, fontweight='bold')
+        plt.ylabel("Total Quiz Attempts", fontsize=12, fontweight='bold')
+        plt.title("📊 Quiz Attempt Trends Over Time", fontsize=14, fontweight='bold', color='darkred')
         plt.xticks(rotation=45)
+
+        # Add value labels to points
+        for i, txt in enumerate(counts):
+            plt.text(dates[i], txt, f"{txt}", ha='center', va='bottom', fontsize=11, fontweight='bold')
+
         plt.tight_layout()
-        plt.savefig("static/images/quiz_attempts.png")
+        plt.savefig("static/images/quiz_attempts.png", dpi=300)
         plt.close()
 
     return render_template(
@@ -357,6 +360,7 @@ def admin_summary_charts():
         top_performers=[{"name": p[0], "score": p[1]} for p in top_performers],
         latest_attempts=[{"user": a[0], "score": a[1], "quiz_name": f"Quiz {a[2]}"} for a in latest_attempts]
     )
+
 
 
 
@@ -407,34 +411,40 @@ def user_start_quiz(quiz_id):
     questions = quiz.questions
     total_questions = len(questions)
 
-    # Initialize quiz progress if not already present
-    if 'quiz_progress' not in session:
-        session['quiz_progress'] = {'answers': {}, 'current_index': 0}
-    elif 'current_index' not in session['quiz_progress']:
-        session['quiz_progress']['current_index'] = 0
+    # i am checking if the quiz ID has changed or if the quiz progress is not set
+    if 'quiz_progress' not in session or session.get('quiz_id') != quiz_id:
+        session['quiz_progress'] = {'answers': {}, 'current_index': 0, 'remaining_time': 300}  # Default to 300 sec
+        session['quiz_id'] = quiz_id  # Store the current quiz ID in the session
 
-    # Get the current index safely
-    try:
-        question_index = int(session['quiz_progress'].get('current_index', 0))
-    except ValueError:
-        question_index = 0
+    question_index = session['quiz_progress'].get('current_index', 0)
+    remaining_time = session['quiz_progress'].get('remaining_time', 300)
 
     if request.method == 'POST':
-        action = request.form.get('action')
+        action = request.form.get('action', 'submit')  # Default to 'submit' if action is missing
         question_id = request.form.get('question_id')
-        selected_option = request.form.get('selected_option')
+        selected_option = request.form.get('selected_option', -1)  # Default to -1 if no option is selected
+        remaining_time = request.form.get('remaining_time', 0)  # Default to 0 if timer runs out
 
-        # Validate and store answers
+        # Debug: Print the form data
+        print(f"Action: {action}")
+        print(f"Question ID: {question_id}")
+        print(f"Selected Option: {selected_option}")
+        print(f"Remaining Time: {remaining_time}")
+
+        # Ensure data validity
         try:
             question_id = int(question_id)
             selected_option = int(selected_option)
+            remaining_time = int(remaining_time)
         except (ValueError, TypeError):
-            return "Invalid question ID or selected option", 400
+            return "Invalid input", 400
 
+        # Save progress
         session['quiz_progress']['answers'][str(question_id)] = selected_option
+        session['quiz_progress']['remaining_time'] = remaining_time  # Save remaining time
         session.modified = True
 
-        # Handle button actions
+        # Handle navigation
         if action == 'submit':
             return redirect(url_for('user_submit_quiz', quiz_id=quiz_id))
         elif action == 'back' and question_index > 0:
@@ -445,68 +455,91 @@ def user_start_quiz(quiz_id):
         session.modified = True
         return redirect(url_for('user_start_quiz', quiz_id=quiz_id))
 
-    # Redirect if quiz is complete
+    # Fetch the current question
     if question_index >= total_questions:
         return redirect(url_for('user_submit_quiz', quiz_id=quiz_id))
 
-    # Fetch the current question
     question = questions[question_index]
-    print(question)
 
     return render_template(
         'user/user_start_quiz.html',
         quiz=quiz,
         question=question,
         current_question_index=question_index,
-        total_questions=total_questions
+        total_questions=total_questions,
+        remaining_time=remaining_time  # Use stored remaining time
     )
+@app.route('/user/get_timer', methods=['GET'])
+def get_timer():
+    remaining_time = session.get('quiz_progress', {}).get('remaining_time', 300)
+    return jsonify({'remaining_time': remaining_time})
+
+@app.route('/user/update_timer', methods=['POST'])
+def update_timer():
+    data = request.get_json()
+    if 'remaining_time' in data:
+        session.setdefault('quiz_progress', {})['remaining_time'] = int(data['remaining_time'])
+        session.modified = True
+    return jsonify({'status': 'success'})
 
 
 @app.route('/user/submit_quiz/<int:quiz_id>', methods=['GET'])
 def user_submit_quiz(quiz_id):
+    # Ensure the user is logged in
     user_email = session.get('user_email')
-    user = User_Info.query.filter_by(email=user_email).first() if user_email else None
+    if not user_email:
+        return redirect('/login')
 
+    user = User_Info.query.filter_by(email=user_email).first()
     if not user:
         return redirect('/login')
 
+    # Fetch the quiz
     quiz = Quiz.query.get(quiz_id)
     if not quiz:
         return "Quiz not found", 404
 
-    # Retrieve user's answers
-    quiz_progress = session.get('quiz_progress', {})  # Use get() instead of pop()
+    # Retrieve user's answers from session
+    quiz_progress = session.get('quiz_progress', {})
     user_answers = quiz_progress.get('answers', {})
 
-    # Evaluate score
-    correct_count = sum(
-        1 for question in quiz.questions
-        if int(user_answers.get(str(question.id), -1)) == question.correct_option
-    )
-
+    # Calculate the score
+    correct_count = 0
     total_questions = len(quiz.questions)
 
-    # Proper calculation of the score
-    total_score = ((correct_count / total_questions) * 100) if total_questions > 0 else 0
+    for question in quiz.questions:
+        user_answer = user_answers.get(str(question.id), -1)  # Default to -1 if no answer
+        if int(user_answer) == question.correct_option:
+            correct_count += 1
 
-    # Save score in the database
+    # Calculate the percentage score
+    total_score = (correct_count / total_questions * 100) if total_questions > 0 else 0
+
+    # Save or update the score in the database
     existing_score = Score.query.filter_by(user_id=user.id, quiz_id=quiz.id).first()
 
     if existing_score:
         existing_score.total_score = total_score
-        db.session.commit()
     else:
         score_entry = Score(user_id=user.id, quiz_id=quiz.id, total_score=total_score)
         db.session.add(score_entry)
-        db.session.commit()
 
+    db.session.commit()
+
+    # Clear the quiz progress from the session
+    #session.pop('quiz_progress', None)
+
+
+    # Fetch all scores for the user
     scores = Score.query.filter_by(user_id=user.id).all()
 
-    # Clear the quiz progress
-    session.pop('quiz_progress', None)
-
-    return render_template('user/user_scores.html', scores=scores, total_score=total_score, message="Quiz submitted successfully!")
-
+    # Render the results page
+    return render_template(
+        'user/user_scores.html',
+        scores=scores,
+        total_score=total_score,
+        message="Quiz submitted successfully!"
+    )
 
 
 @app.route('/user/view_quiz/<quiz_id>')
@@ -521,28 +554,87 @@ def user_view_quiz(quiz_id):
 
 
 
+
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Set a modern Seaborn style
+sns.set_theme(style="whitegrid")
+
+from flask import render_template, url_for
+import os
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sqlalchemy.sql import func
+from backend.models import db, Subject, Chapter, Quiz, Score
+
+# Set Seaborn theme for modern styling
+sns.set_theme(style="whitegrid")
+
 @app.route('/user/summary_charts')
 def user_summary_charts():
     os.makedirs("static/images", exist_ok=True)
 
-    # Subject-wise No. of Quizzes
+    # 📚 Subject-wise Users' Average Marks
     subject_data = db.session.query(
-        Subject.name, func.count(Quiz.id)
+        Subject.name, func.avg(Score.total_score)
     ).select_from(Subject) \
     .join(Chapter, Chapter.subject_id == Subject.id) \
     .join(Quiz, Quiz.chapter_id == Chapter.id) \
+    .join(Score, Score.quiz_id == Quiz.id) \
     .group_by(Subject.name).all()
 
     subject_labels = [row[0] for row in subject_data]
-    subject_counts = [row[1] for row in subject_data]
+    subject_avg_scores = [row[1] for row in subject_data]
 
+    plt.figure(figsize=(8, 5))
+    ax = sns.barplot(x=subject_labels, y=subject_avg_scores, palette="coolwarm", edgecolor="black")
+    plt.xlabel("Subjects", fontsize=12, fontweight='bold')
+    plt.ylabel("Average Score", fontsize=12, fontweight='bold')
+    plt.title("📚 Subject-wise Users' Average Scores", fontsize=14, fontweight='bold', color='darkblue')
+    plt.xticks(rotation=20)
     
+    # Add value labels
+    for p in ax.patches:
+        ax.annotate(f"{p.get_height():.1f}", (p.get_x() + p.get_width() / 2, p.get_height()), 
+                    ha='center', va='bottom', fontsize=11, fontweight='bold', color='black')
+
+    plt.tight_layout()
+    plt.savefig("static/images/subject_avg_scores.png", dpi=300)
+    plt.close()
+
+    # 📅 Month-wise Quizzes Attempted
+    month_data = db.session.query(
+        func.strftime('%Y-%m', Quiz.date_of_quiz), func.count(Quiz.id)
+    ).group_by(func.strftime('%Y-%m', Quiz.date_of_quiz)).all()
+
+    month_labels = [row[0] for row in month_data]
+    month_quiz_counts = [row[1] for row in month_data]
+
+    plt.figure(figsize=(8, 5))
+    ax = sns.lineplot(x=month_labels, y=month_quiz_counts, marker="o", linestyle="-", linewidth=2, 
+                      markersize=8, color="darkorange")
+    plt.xlabel("Month", fontsize=12, fontweight='bold')
+    plt.ylabel("Quizzes Attempted", fontsize=12, fontweight='bold')
+    plt.title("📅 Month-wise Quizzes Attempted", fontsize=14, fontweight='bold', color='darkred')
+    plt.xticks(rotation=30)
+
+    # Add value labels to points
+    for i, txt in enumerate(month_quiz_counts):
+        plt.text(month_labels[i], txt, f"{txt}", ha='center', va='bottom', fontsize=11, fontweight='bold')
+
+    plt.tight_layout()
+    plt.savefig("static/images/month_quizzes_attempted.png", dpi=300)
+    plt.close()
 
     return render_template(
         'user/user_summary_chart.html',
-        subject_chart=url_for('static', filename='images/subject_quizzes.png'),
-        month_chart=url_for('static', filename='images/month_quizzes.png')
+        subject_chart=url_for('static', filename='images/subject_avg_scores.png'),
+        month_chart=url_for('static', filename='images/month_quizzes_attempted.png')
     )
+
+
 
 
 

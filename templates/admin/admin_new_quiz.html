@@ -21,11 +21,11 @@
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Duration (hh:mm):</label>
-        <input type="text" class="form-control" name="duration" placeholder="e.g., 01:30 (for 1 hour 30 mins)" required>
+        <label class="form-label">Duration (in seconds):</label>
+        <input type="text" class="form-control" name="duration" placeholder="300 seconds" required>
     </div>
 
-    <small class="text-danger">Note: Duration should be in HH:MM format.</small>
+    <small class="text-danger">Note: Duration should be seconds.</small>
 
     <button type="submit" class="btn btn-success">Save</button>
     <a href="{{ url_for('quiz_management') }}" class="btn btn-secondary">Cancel</a>

@@ -24,11 +24,12 @@
         <input type="date" class="form-control" name="date_of_quiz" value="{{ quiz.date_of_quiz.strftime('%Y-%m-%d') }}" required>
     </div>
 
-    <!-- Duration of Quiz (HH:MM) -->
+    <!-- Duration of Quiz (in seconds) -->
     <div class="mb-3">
-        <label class="form-label">Duration (HH:MM)</label>
-        <input type="text" class="form-control" name="duration" value="{{ quiz.duration_seconds // 3600 }}:{{ (quiz.duration_seconds % 3600) // 60 }}" required>
-    </div>
+        <label class="form-label">Duration (in seconds)</label>
+        <input type="number" class="form-control" name="duration" 
+             value="{{ quiz.duration_seconds }}" required> </div>
+
 
     <!-- Remarks (Optional) -->
     <div class="mb-3">

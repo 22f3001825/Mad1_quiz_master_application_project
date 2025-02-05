@@ -4,15 +4,19 @@
 {% block content %}
 <div class="dashboard">
     <h1>📊 Summary Charts</h1>
+
+    <!-- Subject-wise Users' Average Scores -->
     <div class="chart-container">
-        <h3>📚 Subject-wise No. of Quizzes</h3>
+        <h3>📚 Subject-wise Average Scores</h3>
         <img src="{{ subject_chart }}" class="img-fluid rounded shadow" style="max-width: 90%; height: auto;">
     </div>
-    
+
+    <!-- Month-wise Quizzes Attempted -->
     <div class="chart-container">
-        <h3>📅 Month-wise No. of Quizzes Attempted</h3>
+        <h3>📅 Month-wise Quizzes Attempted</h3>
         <img src="{{ month_chart }}" class="img-fluid rounded shadow" style="max-width: 90%; height: auto;">
     </div>
-       
 </div>
 {% endblock %}
+
+

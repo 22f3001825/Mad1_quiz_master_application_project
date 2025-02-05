@@ -2,45 +2,63 @@
 
 {% block title %}Start Quiz{% endblock %}
 
+{% block head %}
+{{ super() }}
+{% endblock %}
+
 {% block content %}
 <div class="quiz-container">
     <h1>Start the Quiz</h1>
+
+
+<!-- Timer Display -->
+
+<div id="quiz-timer" style="display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 18px; font-weight: 600; background: linear-gradient(135deg, #00c6ff, #0072ff); padding: 14px 24px; border-radius: 15px; border: 2px solid #0056b3; box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2); width: fit-content; transition: transform 0.3s ease-in-out;">
+    <span style="color: #ffffff; font-size: 16px; letter-spacing: 1px;">Time Left:</span>
+    <span class="time" style="color: #ffffff; font-weight: 700; font-size: 24px; letter-spacing: 1px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);">05:00</span>
+</div>
+
+
+
 
     <div class="quiz-header">
         <span>Q.No: {{ current_question_index + 1 }}/{{ total_questions }}</span>
     </div>
     <form method="POST" action="{{ url_for('user_start_quiz', quiz_id=quiz.id) }}">
         <input type="hidden" name="question_id" value="{{ question.id }}">
+        <!-- Hidden input field for remaining time -->
+        <input type="hidden" id="remaining_time" name="remaining_time" value="{{ remaining_time }}">
         
-        <!-- Add this section to display the question text -->
+        <!-- Question Text -->
         <div class="question-text">
             <p>{{ question.statement }}</p>
-
         </div>
-
+    
+        <!-- Options -->
         <ul class="options">
             <li><input type="radio" name="selected_option" value="1" required> {{ question.option1 }}</li>
             <li><input type="radio" name="selected_option" value="2" required> {{ question.option2 }}</li>
             <li><input type="radio" name="selected_option" value="3" required> {{ question.option3 }}</li>
             <li><input type="radio" name="selected_option" value="4" required> {{ question.option4 }}</li>
         </ul>
-
+    
+        <!-- Quiz Controls -->
         <div class="quiz-controls">
-            <!-- Back button: Only show for questions after the first one -->
             {% if current_question_index > 0 %}
             <button type="submit" name="action" value="back" class="btn btn-secondary">Back</button>
             {% endif %}
-
-            <!-- Save and Next button: Hide for the last question -->
+    
             {% if current_question_index < total_questions - 1 %}
             <button type="submit" name="action" value="next" class="btn btn-primary">Save and Next</button>
             {% endif %}
-
-            <!-- Submit button: Only show for the last question -->
+    
             {% if current_question_index == total_questions - 1 %}
             <button type="submit" name="action" value="submit" class="btn btn-success">Submit</button>
             {% endif %}
         </div>
     </form>
 </div>
+
+<!-- Link to the Timer JavaScript -->
+<script src="{{ url_for('static', filename='scripts/quiz_timer.js') }}"></script>
 {% endblock %}
