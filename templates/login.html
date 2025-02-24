@@ -1,41 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Login</title>
-  <!-- Google Fonts for Modern Look -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/styles/main.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
- 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in / Sign up Form</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="my_container">
-    <div class="center"><h1 >Welcome to Quiz Master</h1></div>
-    <div class="my_panel">
-      <div class="center"><h3>Login</h3></div>
-      <form action='/login' method='POST'>
-      <div class="input_form">
-        <div class="mb-3">
-          <label for="user_name" class="form-label">Username (E-mail):</label>
-          <input type="email" class="form-control" id="user_name" name="email" placeholder="iitm@study.ac.in" required>
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password:</label>
-          <input type="password" class="form-control" id="password" name="password" placeholder="password" required>
-        </div>
-        <div class="mb-3">
-          <button type="submit" class="btn btn-primary">Login</button>
-          Create new user? <a href="/register">Signup</a>
-          <div class="err_msg">
-            {% if msg %}
-                <p>{{ msg }}</p>
-            {% endif %}
-        </div>
-        
+  <div class="container">
+    <div class="forms-container">
+      <div class="signin-signup">
+        <form action="/login" method="POST" class="sign-in-form">
+          <h2 class="title">Sign in</h2>
+          <div class="input-field">
+            <i class="fas fa-user"></i>
+            <input type="email" name="email" placeholder="Username (E-mail)" required />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-lock"></i>
+            <input type="password" name="password" placeholder="Password" required />
+          </div>
+          <input type="submit" value="Login" class="btn solid" />
+        </form>
+        <form action="/register" method="POST" class="sign-up-form">
+          <h2 class="title">Sign up</h2>
+          <div class="input-field">
+            <i class="fas fa-user"></i>
+            <input type="email" name="email" placeholder="Username (E-mail)" required />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-envelope"></i>
+            <input type="text" name="full_name" placeholder="Full Name" required />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-lock"></i>
+            <input type="password" name="password" placeholder="Password" required />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-graduation-cap"></i>
+            <input type="text" name="qualification" placeholder="Qualification" required />
+          </div>
+          <div class="input-field">
+            <i class="fas fa-calendar"></i>
+            <input type="date" name="dob" required />
+          </div>
+          <input type="submit" class="btn" value="Sign up" />
+        </form>
+      </div>
+    </div>
+
+    <div class="panels-container">
+      <div class="panel left-panel">
+        <div class="content">
+          <h3>New here ?</h3>
+          <p>
+            Join Quiz Master and start your journey of knowledge and fun!
+          </p>
+          <button class="btn transparent" id="sign-up-btn">
+            Sign up
+          </button>
         </div>
       </div>
-      </form>
+      <div class="panel right-panel">
+        <div class="content">
+          <h3>One of us ?</h3>
+          <p>
+            Welcome back to Quiz Master! Login to continue your quest for knowledge.
+          </p>
+          <button class="btn transparent" id="sign-in-btn">
+            Sign in
+          </button>
+        </div>
+      </div>
     </div>
   </div>
+
+  <script src="{{ url_for('static', filename='login.js') }}"></script>
+
 </body>
 </html>

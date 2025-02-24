@@ -53,7 +53,7 @@ def signup():  # 'signup' function remains unchanged
 
         usr = User_Info.query.filter_by(email=uname).first()
         if usr:
-            return render_template('signup.html', msg='Email already registered!')
+            return render_template('login.html', msg='Email already registered!')
 
         new_usr = User_Info(email=uname, password=pwd, full_name=fullname, qualification=qualification, dob=dob)
         db.session.add(new_usr)
@@ -61,7 +61,7 @@ def signup():  # 'signup' function remains unchanged
 
         return redirect(url_for('login'))  # Redirect to login after successful signup
 
-    return render_template('signup.html', msg='')
+    return render_template('login.html', msg='')
 
 @app.route('/logout')
 def logout():
@@ -103,7 +103,20 @@ def delete_subject(subject_id):
     if subject:
         db.session.delete(subject)
         db.session.commit()
-    return redirect(url_for('admin_dashboard'))  # Redirect back to the dashboard
+    return redirect(url_for('admin_dashboard'))  # Redirect back to the dashboard 
+
+@app.route('/admin/edit_subject/<int:subject_id>', methods=['GET', 'POST'])
+def edit_subject(subject_id):
+    subject = Subject.query.get_or_404(subject_id)  
+    if request.method == 'POST':
+        subject.name = request.form['name']  
+        subject.description = request.form['description']
+        db.session.commit()
+        flash('Subject updated successfully!', 'success')
+        return redirect(url_for('admin_dashboard'))  # Redirect back to the dashboard
+
+    return render_template('admin/edit_subject.html', subject=subject)
+
 
 
 @app.route('/admin/new_chapter', methods=['GET', 'POST'])
@@ -161,16 +174,19 @@ def edit_chapter(chapter_id):
 @app.route('/admin/new_question', methods=['GET', 'POST'])
 def new_question():
     if request.method == 'POST':
+        # Fetch form data
         statement = request.form.get('statement')
         option1 = request.form.get('option1')
         option2 = request.form.get('option2')
         option3 = request.form.get('option3')
         option4 = request.form.get('option4')
         correct_option = request.form.get('correct_option')
-        quiz_id = request.form.get('quiz_id')  # Now correctly fetching quiz_id
+        quiz_id = request.form.get('quiz_id')
 
-        quiz = Quiz.query.get(quiz_id)  # Fetch the Quiz
+        # Fetch the Quiz
+        quiz = Quiz.query.get(quiz_id)
         if quiz:
+            # Create a new Question object
             new_question = Question(
                 statement=statement,
                 option1=option1,
@@ -178,14 +194,23 @@ def new_question():
                 option3=option3,
                 option4=option4,
                 correct_option=int(correct_option),
-                quiz_id=quiz.id  # Correctly linking question to quiz
+                quiz_id=quiz.id
             )
             db.session.add(new_question)
             db.session.commit()
-            flash("Question added successfully!", "success")  # Flash message
-            return redirect(url_for('quiz_management'))  # Redirect to quiz management page
+            flash("Question added successfully!", "success")
 
-    quizzes = Quiz.query.all()  # Fetch all quizzes instead of chapters
+        # Check which button was clicked
+        if request.form.get('action') == 'save_next':
+            # Reload the same page to add another question
+            quizzes = Quiz.query.all()
+            return render_template('admin/admin_new_question.html', quizzes=quizzes, selected_quiz_id=quiz_id)
+
+        # Default action: Redirect to quiz management page
+        return redirect(url_for('quiz_management'))
+
+    # Handle GET request
+    quizzes = Quiz.query.all()
     return render_template('admin/admin_new_question.html', quizzes=quizzes)
 
 
@@ -361,8 +386,50 @@ def admin_summary_charts():
         latest_attempts=[{"user": a[0], "score": a[1], "quiz_name": f"Quiz {a[2]}"} for a in latest_attempts]
     )
 
+from sqlalchemy import or_, cast, String
+
+@app.route('/admin/search', methods=['GET'])
+def search():
+    query = request.args.get('query', '').strip()
+    if not query:
+        flash("Please enter a search term.", "warning")
+        return redirect(url_for('quiz_management'))
+
+    subjects = Subject.query.filter(Subject.name.ilike(f"%{query}%")).all()
+
+    chapters = Chapter.query.filter(Chapter.name.ilike(f"%{query}%")).all()
+
+    quizzes = Quiz.query.join(Chapter).join(Subject).filter(or_(
+        Quiz.remarks.ilike(f"%{query}%"),
+        cast(Quiz.date_of_quiz, String).ilike(f"%{query}%"),
+        Chapter.name.ilike(f"%{query}%"),
+        Subject.name.ilike(f"%{query}%")
+    )).all()
+
+    users = User_Info.query.filter(User_Info.full_name.ilike(f"%{query}%")).all()
+
+    return render_template(
+        'admin/search_results.html',
+        query=query,
+        subjects=subjects,
+        chapters=chapters,
+        quizzes=quizzes,
+        users=users
+    )
 
 
+
+
+@app.route('/admin/delete_user/<int:user_id>', methods=['POST'])
+def delete_user(user_id):
+    user = User_Info.query.get(user_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        flash(f"User {user.full_name} has been deleted.", "success")
+    else:
+        flash("User not found.", "danger")
+    return redirect(url_for('quiz_management'))
 
 
 # User Routes (Inside templates/user)
@@ -552,29 +619,42 @@ def user_view_quiz(quiz_id):
 
 
 
-
-
-
-
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-# Set a modern Seaborn style
-sns.set_theme(style="whitegrid")
-
-from flask import render_template, url_for
+from flask import render_template, url_for, session
 import os
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sqlalchemy.sql import func
-from backend.models import db, Subject, Chapter, Quiz, Score
-
-# Set Seaborn theme for modern styling
-sns.set_theme(style="whitegrid")
+from backend.models import db, Subject, Chapter, Quiz, Score, User_Info
 
 @app.route('/user/summary_charts')
 def user_summary_charts():
     os.makedirs("static/images", exist_ok=True)
+    current_user_id = session.get('user_id')
+
+    # 🏆 Subject-wise Top Scorers
+    top_scorers = db.session.query(
+        Subject.name,
+        User_Info.full_name,
+        func.max(Score.total_score).label('top_score')
+    ).select_from(Subject) \
+    .join(Chapter, Chapter.subject_id == Subject.id) \
+    .join(Quiz, Quiz.chapter_id == Chapter.id) \
+    .join(Score, Score.quiz_id == Quiz.id) \
+    .join(User_Info, User_Info.id == Score.user_id) \
+    .group_by(Subject.name).all()
+
+    plt.figure(figsize=(14, 8))
+    sns.barplot(x=[row[0] for row in top_scorers], y=[row[2] for row in top_scorers], palette="viridis")
+    plt.xlabel("Subjects", fontsize=12, fontweight='bold')
+    plt.ylabel("Top Score", fontsize=12, fontweight='bold')
+    plt.title("🏆 Subject-wise Top Scorers", fontsize=14, fontweight='bold', color='darkgreen')
+    plt.xticks(rotation=30, ha='right')
+
+    for i, (subject, name, score) in enumerate(top_scorers):
+        plt.text(i, score, f'{name}\n{score:.1f}', ha='center', va='bottom', fontweight='bold')
+
+    plt.tight_layout()
+    plt.savefig("static/images/subject_top_scorers.png", dpi=300, bbox_inches='tight')
+    plt.close()
 
     # 📚 Subject-wise Users' Average Marks
     subject_data = db.session.query(
@@ -585,57 +665,52 @@ def user_summary_charts():
     .join(Score, Score.quiz_id == Quiz.id) \
     .group_by(Subject.name).all()
 
-    subject_labels = [row[0] for row in subject_data]
-    subject_avg_scores = [row[1] for row in subject_data]
-
-    plt.figure(figsize=(8, 5))
-    ax = sns.barplot(x=subject_labels, y=subject_avg_scores, palette="coolwarm", edgecolor="black")
+    plt.figure(figsize=(12, 6))
+    ax = sns.barplot(x=[row[0] for row in subject_data], y=[float(row[1]) for row in subject_data], palette="coolwarm")
     plt.xlabel("Subjects", fontsize=12, fontweight='bold')
     plt.ylabel("Average Score", fontsize=12, fontweight='bold')
     plt.title("📚 Subject-wise Users' Average Scores", fontsize=14, fontweight='bold', color='darkblue')
-    plt.xticks(rotation=20)
-    
-    # Add value labels
-    for p in ax.patches:
-        ax.annotate(f"{p.get_height():.1f}", (p.get_x() + p.get_width() / 2, p.get_height()), 
-                    ha='center', va='bottom', fontsize=11, fontweight='bold', color='black')
+    plt.xticks(rotation=45, ha='right')
+
+    for i, p in enumerate(ax.patches):
+        ax.annotate(f"{p.get_height():.2f}", (p.get_x() + p.get_width() / 2., p.get_height()),
+                    ha='center', va='center', fontsize=10, color='black', xytext=(0, 5),
+                    textcoords='offset points')
 
     plt.tight_layout()
-    plt.savefig("static/images/subject_avg_scores.png", dpi=300)
+    plt.savefig("static/images/subject_avg_scores.png", dpi=300, bbox_inches='tight')
     plt.close()
 
-    # 📅 Month-wise Quizzes Attempted
-    month_data = db.session.query(
-        func.strftime('%Y-%m', Quiz.date_of_quiz), func.count(Quiz.id)
-    ).group_by(func.strftime('%Y-%m', Quiz.date_of_quiz)).all()
+    # 📈 Subject-wise Most Active Users
+    most_active = db.session.query(
+        Subject.name,
+        User_Info.full_name,
+        func.count(Score.id).label('quiz_count')
+    ).select_from(Subject) \
+    .join(Chapter, Chapter.subject_id == Subject.id) \
+    .join(Quiz, Quiz.chapter_id == Chapter.id) \
+    .join(Score, Score.quiz_id == Quiz.id) \
+    .join(User_Info, User_Info.id == Score.user_id) \
+    .group_by(Subject.name) \
+    .order_by(func.count(Score.id).desc()).all()
 
-    month_labels = [row[0] for row in month_data]
-    month_quiz_counts = [row[1] for row in month_data]
+    plt.figure(figsize=(12, 6))
+    sns.barplot(x=[row[0] for row in most_active], y=[row[2] for row in most_active], palette="muted")
+    plt.xlabel("Subjects", fontsize=12, fontweight='bold')
+    plt.ylabel("Number of Quizzes Attempted", fontsize=12, fontweight='bold')
+    plt.title("📈 Subject-wise Most Active Users", fontsize=14, fontweight='bold', color='darkred')
+    plt.xticks(rotation=45, ha='right')
 
-    plt.figure(figsize=(8, 5))
-    ax = sns.lineplot(x=month_labels, y=month_quiz_counts, marker="o", linestyle="-", linewidth=2, 
-                      markersize=8, color="darkorange")
-    plt.xlabel("Month", fontsize=12, fontweight='bold')
-    plt.ylabel("Quizzes Attempted", fontsize=12, fontweight='bold')
-    plt.title("📅 Month-wise Quizzes Attempted", fontsize=14, fontweight='bold', color='darkred')
-    plt.xticks(rotation=30)
-
-    # Add value labels to points
-    for i, txt in enumerate(month_quiz_counts):
-        plt.text(month_labels[i], txt, f"{txt}", ha='center', va='bottom', fontsize=11, fontweight='bold')
+    for i, (subject, name, count) in enumerate(most_active):
+        plt.text(i, count, f'{name}\n{count}', ha='center', va='bottom', fontweight='bold')
 
     plt.tight_layout()
-    plt.savefig("static/images/month_quizzes_attempted.png", dpi=300)
+    plt.savefig("static/images/subject_most_active.png", dpi=300, bbox_inches='tight')
     plt.close()
 
     return render_template(
         'user/user_summary_chart.html',
+        subject_top_scorers=url_for('static', filename='images/subject_top_scorers.png'),
         subject_chart=url_for('static', filename='images/subject_avg_scores.png'),
-        month_chart=url_for('static', filename='images/month_quizzes_attempted.png')
+        subject_most_active=url_for('static', filename='images/subject_most_active.png')
     )
-
-
-
-
-
-

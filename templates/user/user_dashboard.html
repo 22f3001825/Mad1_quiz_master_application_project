@@ -7,10 +7,10 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
+                <th>Quiz ID</th>
+                <th>Chapter</th>
                 <th>No. of Questions</th>
                 <th>Date</th>
-                <th>Duration (mm:ss)</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -18,16 +18,17 @@
             {% for quiz in quizzes %}
             <tr>
                 <td>{{ quiz.id }}</td>
+                <td>{{ quiz.chapter.name if quiz.chapter else 'N/A' }}</td>
                 <td>{{ quiz.questions|length }}</td> 
                 <td>{{ quiz.date_of_quiz.strftime('%Y-%m-%d') if quiz.date_of_quiz else 'N/A' }}</td>
-                <td>
+                <!--<td>
                     {% if quiz.duration_seconds %}
                         {{ "%02d:%02d" | format((quiz.duration_seconds % 3600) / 60, 
                                                 quiz.duration_seconds % 60) }}
                     {% else %}
                         00:00
                     {% endif %}
-                </td>
+                </td>-->
                 
                 <td>
                     <a href="{{ url_for('user_view_quiz', quiz_id=quiz.id) }}" class="btn view">View</a>

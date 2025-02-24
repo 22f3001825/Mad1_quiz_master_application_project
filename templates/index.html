@@ -12,48 +12,61 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/styles/home.css">
 
-<body>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div>
-      <h1>Welcome to Quiz Master!</h1>
+  <body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div>
+        <h1>Welcome to Quiz Master!</h1>
+
+        <p>Test your knowledge, challenge your friends, and become the ultimate Quiz Master. Join now to explore quizzes on various topics.</p>
+        <br>
+        <div class="button-container">
+          <a href="/login" class="btn btn-sign-in" 
+             style="padding: 18px 70px; font-size: 20px; min-width: 220px; display: inline-block; text-align: center;">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+        </div> 
+      </div>
+    </section>
       
-      <p>Test your knowledge, challenge your friends, and become the ultimate Quiz Master. Join now to explore quizzes on various topics.</p>
-      <div class="button-container">
-        <a href="/login" class="btn btn-sign-in">
-          <i class="fas fa-sign-in-alt"></i> Login
-        </a>
-        <a href="/register" class="btn btn-sign-up">
-          <i class="fas fa-user-plus"></i> Register
-        </a>
+    <!-- Features Section -->
+    <section class="features-section">
+      <h2>You Came to the Right Place!</h2>
+      <div class="feature-cards">
+        <div class="feature-card">
+          <i class="fas fa-brain"></i>
+          <h3>Wide Range of Topics</h3>
+          <p>Explore quizzes on different topics. There's something for everyone!</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-chart-line"></i>
+          <h3>Track Your Progress</h3>
+          <p>Monitor your performance and improve your knowledge with detailed analytics.</p>
+        </div>
       </div>
-      
+    </section>
+    <!-- Quiz Animation Section -->
+  <section class="quiz-section">
+ 
+    <div class="quiz-content">
+      <div class="quiz-question">Ready to test your knowledge?</div>
+      <div class="quiz-options">
+        <button class="quiz-option" data-option="A"><i class="fa-solid fa-question" style="color: #fa0505;"></i></button>
+        <button class="quiz-option" data-option="B"><i class="fa-solid fa-brain"></i></button>
+        <button class="quiz-option" data-option="C"><i class="fa-solid fa-lightbulb" style="color: #ffe53d;"></i></button>
+         <button class="quiz-option" data-option="D"><i class="fa-solid fa-graduation-cap" style="color: #25252c;"></i></button>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Features Section -->
-  <section class="features-section">
-    <h2>You Came to the Right Place!</h2>
-    <div class="feature-cards">
-      <div class="feature-card">
-        <i class="fas fa-brain"></i>
-        <h3>Wide Range of Topics</h3>
-        <p>Explore quizzes on different topics. There's something for everyone!</p>
-      </div>
-      <div class="feature-card">
-        <i class="fas fa-chart-line"></i>
-        <h3>Track Your Progress</h3>
-        <p>Monitor your performance and improve your knowledge with detailed analytics.</p>
-      </div>
-    </div>
-  </section>
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 Quiz Master. All rights reserved.</p>
+      <p class="developer">Developed with ❤️ by <strong>ALI JAWAD</strong></p>
+    </footer>
+  </body>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Quiz Master. All rights reserved.</p>
-    <p class="developer">Developed with ❤️ by <strong>ALI JAWAD</strong></p>
-  </footer>
-
-</body>
 </html>
+

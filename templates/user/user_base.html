@@ -6,6 +6,7 @@
     <title>{% block title %}User Dashboard{% endblock %}</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> 
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/user_dashboard.css') }}">
+    
 </head>
 <body>
 
@@ -28,13 +29,11 @@
                 Welcome!
             {% endif %}
         </div>
-        
+         
     </div>
-
     <!-- Main Content -->
     <div class="container">
         {% block content %}{% endblock %}
     </div>
-
 </body>
 </html>

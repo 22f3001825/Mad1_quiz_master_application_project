@@ -5,18 +5,22 @@
 <div class="dashboard">
     <h1>📊 Summary Charts</h1>
 
+    <!-- Subject-wise Top Scorers -->
+    <div class="chart-container">
+        <h3>🏆 Subject-wise Top Scorers</h3>
+        <img src="{{ subject_top_scorers }}" class="img-fluid rounded shadow" style="max-width: 90%; height: auto;">
+    </div>
+
     <!-- Subject-wise Users' Average Scores -->
     <div class="chart-container">
         <h3>📚 Subject-wise Average Scores</h3>
         <img src="{{ subject_chart }}" class="img-fluid rounded shadow" style="max-width: 90%; height: auto;">
     </div>
 
-    <!-- Month-wise Quizzes Attempted -->
+    <!-- Subject-wise Most Active Users -->
     <div class="chart-container">
-        <h3>📅 Month-wise Quizzes Attempted</h3>
-        <img src="{{ month_chart }}" class="img-fluid rounded shadow" style="max-width: 90%; height: auto;">
+        <h3>📈 Subject-wise Most Active Users</h3>
+        <img src="{{ subject_most_active }}" class="img-fluid rounded shadow" style="max-width: 90%; height: auto;">
     </div>
 </div>
 {% endblock %}
-
-

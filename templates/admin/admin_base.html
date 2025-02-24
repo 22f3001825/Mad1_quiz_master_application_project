@@ -22,10 +22,14 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_summary_charts') }}">Summary</a></li>
                     <li class="nav-item"><a class="nav-link text-danger" href="{{ url_for('logout') }}">Logout</a></li>
                 </ul>
-                <div class="search-bar">
-                    <input type="text" placeholder="Search...">
-                    <button><i class="fa fa-search"></i></button>
-                </div>
+                
+            <div class="search-bar">
+                <form action="{{ url_for('search') }}" method="get">
+                    <input type="text" name="query" placeholder="Search..." required>
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+   
                 <span class="navbar-text ms-3">Welcome, Admin</span>
             </div>
         </div>
