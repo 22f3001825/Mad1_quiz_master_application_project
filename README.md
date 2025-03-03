@@ -1,3 +1,5 @@
 # Mad1_quiz_master_application_project
 
-# lets start
+# Run the following command on terminal to install all required dependencies:
+
+pip install -r requirement.txt
