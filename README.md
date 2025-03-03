@@ -3,5 +3,3 @@
 # Run the following command on terminal to install all required dependencies:
 
 pip install -r requirement.txt
-
-python app.py
