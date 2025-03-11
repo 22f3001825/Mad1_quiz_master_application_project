@@ -3,70 +3,348 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to Quiz Master</title>
-  <!-- Bootstrap CDN for Styling -->
+  <title>Kwiz | Test Your Knowledge</title>
+  <!-- Bootstrap CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome for Icons -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/styles/home.css">
-
-
-  <body>
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div>
-        <h1>Welcome to Quiz Master!</h1>
-
-        <p>Test your knowledge, challenge your friends, and become the ultimate Quiz Master. Join now to explore quizzes on various topics.</p>
-        <br>
-        <div class="button-container">
-          <a href="/login" class="btn btn-sign-in" 
-             style="padding: 18px 70px; font-size: 20px; min-width: 220px; display: inline-block; text-align: center;">
-            <i class="fas fa-sign-in-alt"></i> Login
-          </a>
-        </div> 
-      </div>
-    </section>
-      
-    <!-- Features Section -->
-    <section class="features-section">
-      <h2>You Came to the Right Place!</h2>
-      <div class="feature-cards">
-        <div class="feature-card">
-          <i class="fas fa-brain"></i>
-          <h3>Wide Range of Topics</h3>
-          <p>Explore quizzes on different topics. There's something for everyone!</p>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/home.css') }}">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-brain me-2"></i>
+        Kwiz
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Categories</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Pricing</a>
+          </li>
+        </ul>
+        <div class="d-flex">
+          <a href="/login" class="btn btn-outline me-2">Login</a>
+          <a href="/register" class="btn btn-primary">Register</a>
         </div>
-        <div class="feature-card">
-          <i class="fas fa-chart-line"></i>
-          <h3>Track Your Progress</h3>
-          <p>Monitor your performance and improve your knowledge with detailed analytics.</p>
-        </div>
-      </div>
-    </section>
-    <!-- Quiz Animation Section -->
-  <section class="quiz-section">
- 
-    <div class="quiz-content">
-      <div class="quiz-question">Ready to test your knowledge?</div>
-      <div class="quiz-options">
-        <button class="quiz-option" data-option="A"><i class="fa-solid fa-question" style="color: #fa0505;"></i></button>
-        <button class="quiz-option" data-option="B"><i class="fa-solid fa-brain"></i></button>
-        <button class="quiz-option" data-option="C"><i class="fa-solid fa-lightbulb" style="color: #ffe53d;"></i></button>
-         <button class="quiz-option" data-option="D"><i class="fa-solid fa-graduation-cap" style="color: #25252c;"></i></button>
       </div>
     </div>
-  </div>
-</section>
+  </nav>
 
-    <!-- Footer -->
-    <footer>
-      <p>&copy; 2025 Quiz Master. All rights reserved.</p>
-      <p class="developer">Developed with ❤️ by <strong>ALI JAWAD</strong></p>
-    </footer>
-  </body>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 hero-content">
+          <h1 class="hero-title">Elevate Your Knowledge with Kwiz</h1>
+          <p class="hero-subtitle">Challenge yourself, compete with friends, and expand your knowledge with our extensive library of quizzes across various categories.</p>
+          <div class="d-flex flex-wrap">
+            <a href="/register" class="btn btn-primary me-3 mb-2">Get Started Free</a>
+            <a href="#features" class="btn btn-outline mb-2">Learn More</a>
+          </div>
+          <div class="mt-4">
+            <span class="d-block mb-2" style="color: #6b7280; font-size: 0.875rem;">TRUSTED BY LEARNERS</span>
+            <div class="d-flex align-items-center">
+              <div class="me-4">
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <span class="ms-2" style="font-weight: 600;">4.9/5</span>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+  </section>
 
-</html>
+  <!-- Features Section -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <h2 class="section-title">Why Choose Kwiz?</h2>
+      <p class="section-subtitle">Our platform offers everything you need to create, share, and enjoy interactive quizzes for learning and entertainment.</p>
+      
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <h3 class="feature-title">Diverse Categories</h3>
+            <p class="feature-description">Explore quizzes across multiple categories including science, history, pop culture, and more.</p>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="feature-title">Track Progress</h3>
+            <p class="feature-description">Monitor your performance with detailed analytics and insights to improve your knowledge over time.</p>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3 class="feature-title">Compete & Collaborate</h3>
+            <p class="feature-description">Challenge friends, join leaderboards, and participate in global competitions to test your skills.</p>
+          </div>
+        </div>
+        
+        
+        <div class="col-md-4 mb-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3 class="feature-title">Access Anywhere</h3>
+            <p class="feature-description">Take quizzes on any device with our responsive design and mobile-friendly interface.</p>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3 class="feature-title">Fair & Secure</h3>
+            <p class="feature-description">Enjoy a secure platform with anti-cheating measures to ensure fair competition.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- Popular Categories -->
+  <section class="categories-section">
+    <div class="container">
+      <h2 class="section-title">Explore Quiz Categories</h2>
+      <p class="section-subtitle">Discover quizzes tailored to your interests and challenge your knowledge in specific domains.</p>
+      
+      <div class="row">
+        <div class="col-6 col-md-3 mb-4">
+          <div class="category-card">
+            <div class="category-icon" style="color: #ef4444;">
+              <i class="fas fa-flask"></i>
+            </div>
+            <h4 class="category-title">Science</h4>
+            <p class="category-count">250+ Quizzes</p>
+          </div>
+        </div>
+        
+        <div class="col-6 col-md-3 mb-4">
+          <div class="category-card">
+            <div class="category-icon" style="color: #f59e0b;">
+              <i class="fas fa-landmark"></i>
+            </div>
+            <h4 class="category-title">History</h4>
+            <p class="category-count">180+ Quizzes</p>
+          </div>
+        </div>
+        
+        <div class="col-6 col-md-3 mb-4">
+          <div class="category-card">
+            <div class="category-icon" style="color: #10b981;">
+              <i class="fas fa-globe"></i>
+            </div>
+            <h4 class="category-title">Geography</h4>
+            <p class="category-count">120+ Quizzes</p>
+          </div>
+        </div>
+        
+        <div class="col-6 col-md-3 mb-4">
+          <div class="category-card">
+            <div class="category-icon" style="color: #8b5cf6;">
+              <i class="fas fa-film"></i>
+            </div>
+            <h4 class="category-title">Entertainment</h4>
+            <p class="category-count">200+ Quizzes</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-4">
+        <a href="#" class="btn btn-outline">View All Categories</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Quiz Preview -->
+  <section class="py-5 bg-white">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <h2 class="section-title text-start">Experience Interactive Quizzes</h2>
+          <p class="text-start mb-4" style="color: #6b7280;">Our quizzes are designed to be engaging, challenging, and educational. Try a sample question:</p>
+          
+          <div class="p-4 rounded-3 mb-4" style="background-color: #f3f4f6; border-left: 4px solid var(--primary);">
+            <h4 class="mb-3">Which planet in our solar system has the most moons?</h4>
+            <div class="mb-2">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="quizOption" id="option1">
+                <label class="form-check-label" for="option1">Earth</label>
+              </div>
+            </div>
+            <div class="mb-2">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="quizOption" id="option2">
+                <label class="form-check-label" for="option2">Jupiter</label>
+              </div>
+            </div>
+            <div class="mb-2">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="quizOption" id="option3">
+                <label class="form-check-label" for="option3">Saturn</label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="quizOption" id="option4">
+                <label class="form-check-label" for="option4">Neptune</label>
+              </div>
+            </div>
+            <button class="btn btn-primary mt-2">Submit Answer</button>
+          </div>
+          
+          <p><strong>Looking for more?</strong> Sign up to access thousands of questions across all categories!</p>
+        </div>
+        
+        <div class="col-lg-6">
+          <div class="row">
+            <div class="col-6">
+              <div class="card mb-4 floating-quiz" style="animation-delay: 0s;">
+                <div class="card-body p-3">
+                  <span class="badge bg-primary mb-2">Science</span>
+                  <h5 class="card-title">Space Exploration</h5>
+                  <p class="card-text small">Test your knowledge about our universe and space missions.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="small text-muted">20 Questions</span>
+                    <span class="small text-muted"><i class="fas fa-star text-warning"></i> 4.8</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card floating-quiz" style="animation-delay: 0.5s;">
+                <div class="card-body p-3">
+                  <span class="badge bg-success mb-2">Geography</span>
+                  <h5 class="card-title">World Capitals</h5>
+                  <p class="card-text small">Can you name all the capital cities around the world?</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="small text-muted">15 Questions</span>
+                    <span class="small text-muted"><i class="fas fa-star text-warning"></i> 4.6</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-6 pt-4">
+              <div class="card mb-4 floating-quiz" style="animation-delay: 0.25s;">
+                <div class="card-body p-3">
+                  <span class="badge bg-warning text-dark mb-2">History</span>
+                  <h5 class="card-title">Ancient Civilizations</h5>
+                  <p class="card-text small">Explore the wonders of ancient cultures and their achievements.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="small text-muted">25 Questions</span>
+                    <span class="small text-muted"><i class="fas fa-star text-warning"></i> 4.9</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card floating-quiz" style="animation-delay: 0.75s;">
+                <div class="card-body p-3">
+                  <span class="badge bg-danger mb-2">Pop Culture</span>
+                  <h5 class="card-title">Movies & TV</h5>
+                  <p class="card-text small">Test your knowledge of famous films and television shows.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="small text-muted">30 Questions</span>
+                    <span class="small text-muted"><i class="fas fa-star text-warning"></i> 4.7</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials-section">
+    <div class="container">
+      <h2 class="section-title">What Our Users Say</h2>
+      <p class="section-subtitle">Join thousands of satisfied users who use Kwiz for learning and entertainment.</p>
+      
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="testimonial-card">
+            <div class="testimonial-content">
+              "Kwiz has revolutionized how I study for exams. The variety of questions and immediate feedback has improved my retention significantly."
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="author-info">
+                <h5>Sarah Johnson</h5>
+                <p>University Student</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="testimonial-card">
+            <div class="testimonial-content">
+              "I use Kwiz to create interactive quizzes for my classroom. My students love the competitive element, and I appreciate the detailed analytics."
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="author-info">
+                <h5>Michael Rodriguez</h5>
+                <p>High School Teacher</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="testimonial-card">
+            <div class="testimonial-content">
+              "Our family uses Kwiz for game nights. It's educational and entertaining, with enough variety to keep everyone engaged regardless of age."
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="author-info">
+                <h5>Emily Chen</h5>
+                <p>Parent of Three</p>
