@@ -1,6 +1,6 @@
 # kwiz - Exam Preparation Web Application
 
-kwiz is a multi-user web application designed to help students prepare for exams efficiently. Built using **Flask**, **SQLite**, **jinja**, and **Bootstrap**, it provides a seamless platform for administrators to create quizzes and for users to attempt them while tracking their performance with analytics.
+kwiz is a multi-user web application designed to help students prepare for exams efficiently. Built using **Flask**, **SQLite**, **HTML**, and **CSS**, it provides a seamless platform for administrators to create quizzes and for users to attempt them while tracking their performance with analytics.
 
 ## 🚀 Features
 
