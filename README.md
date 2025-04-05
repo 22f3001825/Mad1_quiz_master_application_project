@@ -8,7 +8,7 @@ kwiz is a multi-user web application designed to help students prepare for exams
 - **Time-Based Tests**: Configurable quiz durations for better exam simulation.
 - **Real-Time Scoring**: Instant evaluation of quiz attempts.
 - **Performance Analytics**: Users can track progress with detailed reports and charts.
-- 
+  
 ## 🛠 Tech Stack
 
 ### **Backend:**
