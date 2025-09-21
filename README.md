@@ -66,4 +66,4 @@ flask run : python3 app.py
 
 ---
 
-**Developed by Ali Jawad as part of the Modern Application Development course at IIT Madras.**
+**Developed by Ali Jawad as part of the Modern Application Development course at IIT Madras**
