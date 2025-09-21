@@ -9,37 +9,40 @@ Built using **Flask**, **SQLite**, **HTML**, and **CSS**, it provides:
 
 ---
 
-📽️ **Demo Video:** [Watch on YouTube](https://youtu.be/fGpqmnVGfcw?si=Wlm9g7p8HRj7Cr_C)
+📽️ **Demo Video:** [Watch on YouTube](https://youtu.be/fGpqmnVGfcw?si=Wlm9g7p8HRj7Cr_C)  
 
+---
 
-## 🚀 Features
+## 🚀 Features  
 
-- **Quiz Management**: Admins can create and manage subjects, chapters, and quizzes.
-- **Time-Based Tests**: Configurable quiz durations for better exam simulation.
-- **Real-Time Scoring**: Instant evaluation of quiz attempts.
-- **Performance Analytics**: Users can track progress with detailed reports and charts.
-  
-## 🛠 Tech Stack
+- **Quiz Management** – Admins can create and manage subjects, chapters, and quizzes  
+- **Time-Based Tests** – Configurable quiz durations for exam-like practice  
+- **Real-Time Scoring** – Instant evaluation of quiz attempts  
+- **Performance Analytics** – Track progress with detailed reports and charts  
 
-### **Backend:**
+---
 
-- Flask, Flask-RESTful
-- SQLAlchemy, SQLite
-- Matplotlib, Seaborn (for data vizualization)
+## 🛠 Tech Stack  
 
-### **Frontend:**
+**Backend**  
+- Flask, Flask-RESTful  
+- SQLAlchemy, SQLite  
+- Matplotlib, Seaborn (for data visualization)  
 
-- HTML , CSS 
-- Bootstrap
+**Frontend**  
+- HTML, CSS  
+- Bootstrap  
 
-## 📦 Installation & Setup
+---
 
-### **1. Create a Virtual Environment**
+## 📦 Installation & Setup  
+
+### 1. Create a Virtual Environment  
 
 ```sh
 python3 -m venv venv
-./venv/scripts/activate
-```
+source venv/bin/activate   # On Linux/Mac
+venv\Scripts\activate      # On Windows
 
 ### **2. Install Dependencies**
 
